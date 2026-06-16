@@ -43,5 +43,5 @@ def health():
 
 
 if __name__ == "__main__":
-    print("\n🐍 CodeSense Python Preprocessor running on port 5050\n")
+    print("\nCodeSense Python Preprocessor running on port 5050\n")
     app.run(host="0.0.0.0", port=5050, debug=True)
