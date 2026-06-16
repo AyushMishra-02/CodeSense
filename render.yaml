@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: codesense-python
+    env: python
+    buildCommand: "cd python-service && pip install -r requirements.txt"
+    startCommand: "cd python-service && gunicorn app:app --bind 0.0.0.0:$PORT"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+
+  - type: web
+    name: codesense-backend
+    env: node
+    buildCommand: "cd backend && npm install"
+    startCommand: "cd backend && npm start"
+    envVars:
+      - key: NODE_VERSION
+        value: 18.17.0
+      - key: FRONTEND_URL
+        value: "https://codesense.vercel.app" # REPLACE THIS with your actual Vercel URL
+      - key: PYTHON_SERVICE_URL
+        fromService:
+          name: codesense-python
+          type: web
+          property: url
+      - key: MONGO_URI
+        value: "mongodb+srv://<USER>:<PASS>@cluster.mongodb.net/codesense" # REPLACE THIS with your actual Atlas URI
+      - key: JWT_SECRET
+        generateValue: true
+      - key: OPENAI_API_KEY
+        value: "your_api_key_here" # OPTIONAL: Replace with real key or leave to use mock reviews
